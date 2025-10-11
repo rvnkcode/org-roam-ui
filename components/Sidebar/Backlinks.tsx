@@ -41,16 +41,16 @@ export const Backlinks = (props: BacklinksProps) => {
   } = props
   const links = linksByNodeId[(previewNode as OrgRoamNode)?.id] ?? []
 
-  const backLinks = [
-    ...new Set(
+  const backLinks = Array.from(
+    new Set(
       links
-        .map((link: LinkObject) => {
+        .filter((link: LinkObject) => {
           const [source, target] = normalizeLinkEnds(link)
-          return source !== previewNode?.id ? source : null
+          return source !== previewNode?.id
         })
-        .filter((source): source is string => source !== null)
+        .map((l) => l.source),
     ),
-  ]
+  )
 
   return (
     <Box className="backlinks" borderRadius="sm" mt={6} p={4} bg="white" mb={10}>
